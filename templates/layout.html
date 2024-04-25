@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <!-- *this is bootstrap  -->
+    {% block head %}{% endblock %}
+    <!--* external stylesheet -->
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <!-- * icons FontAwesome -->
+    {% if level %} {% if level >= 0 %}
+    <style>
+      h1::before,
+      h1::after {
+        content: url(../static/img/{{level}}_t.png);
+        position: relative;
+        top: 30px;
+        display: inline-block;
+        width: 200px; /* Set the width of your image */
+        /* Additional styling as needed */
+      }
+    </style>
+    {% endif %} {% else %}
+    <style>
+      h1::before,
+      h1::after {
+        content: url(../static/img/0_t.png);
+        display: inline-block;
+        position: relative;
+        top: 30px;
+        width: 200px;
+        /* Additional styling as needed */
+      }
+    </style>
+    {% endif %}
+    <script
+      src="https://kit.fontawesome.com/6f3103b13c.js"
+      crossorigin="anonymous"></script>
+  </head>
+  <body class="body">
+    <header class="header">
+      <h1 class="header__h1">{% block bigH1 %}Hello{% endblock %}</h1>
+      {% if get_flashed_messages() %}
+      <div class="header__flash" role="alert">
+        {{ get_flashed_messages() | join(" ") }}
+      </div>
+      {% endif %}
+      <!--* sep -->
+      {% block header %}
+      <!-- HEADER CONTENT -->
+      {% endblock %}
+    </header>
+    <hr />
+    {% block main %}
+    <!-- MAIN CONTENT -->
+    {% endblock %}
+    <!--* sep -->
+    {% block footer %}
+    <!-- FOOTER CONTENT -->
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+<!-- *sep -->
+{% block title %} Login Page {% endblock %}
+<!-- *sep -->
+{% block bigH1 %} Login{% endblock %}
+<!-- *sep -->
+{% block header %}
+<!-- ADDITIONAL HEADER CONTENT -->
+{% endblock %}
+<!-- *sep -->
+{% block main %}
+<main class="main login">
+  <h2 class="main__h2">Enter username and password:</h2>
+
+  <form class="main__form" action="/login" method="post">
+    <input
+      class="main__input"
+      type="text"
+      name="username"
+      placeholder="Username"
+      autocomplete="off" />
+    <input
+      class="main__input"
+      type="password"
+      name="password"
+      placeholder="Password"
+      autocomplete="off" />
+    <button class="main__button" type="submit">Log In</button>
+  </form>
+
+  <p class="error-m">{{ errormessage }}</p>
+  <p><a class="main__a" href="/register">REGISTRATION PAGE</a></p>
+</main>
+{% endblock %}
+<!-- *sep -->
+{% block footer %}
+<footer class="footer"></footer>
+{% endblock %}

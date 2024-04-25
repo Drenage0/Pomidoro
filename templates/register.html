@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+<!--* sep -->
+{% block title %} Registration Page {% endblock %}
+<!-- *sep -->
+{% block bigH1 %} Register{% endblock %}
+<!--* sep -->
+{% block header %}
+<!-- ADDITIONAL HEADER CONTENT -->
+{% endblock %}
+<!-- *sep -->
+{% block main %}
+<main class="main register">
+  <h2 class="main__h2">Enter username and password:</h2>
+
+  <form class="main__form" action="/register" method="post">
+    <input
+      class="main__input"
+      type="text"
+      name="username"
+      placeholder="Username:"
+      autocomplete="off" />
+    <input
+      class="main__input"
+      type="password"
+      name="password"
+      placeholder="Password"
+      autocomplete="off" />
+    <input
+      class="main__input"
+      type="password"
+      name="confirm"
+      placeholder="Confirm Password"
+      autocomplete="off" />
+    <button class="main__button" type="submit">Register</button>
+  </form>
+  <p class="error-m">{{ errormessage }}</p>
+  <p><a class="main__a" href="/login">LOGIN PAGE</a></p>
+</main>
+{% endblock %}
+<!-- *sep -->
+{% block footer %}
+<footer class="footer"></footer>
+{% endblock %}

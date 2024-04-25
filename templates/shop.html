@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+<!-- *sep -->
+{% block title %} Pomidoro Shop {% endblock %}
+<!-- *sep -->
+{% block header %}
+<!-- ADDITIONAL HEADER CONTENT -->
+{% endblock %}
+<!--* sep -->
+{% block bigH1 %}Pomidoro Shop{% endblock %}
+<!-- *sep -->
+{% block main %}
+<main class="main shop">
+  <!-- == SETTINGS MENU == -->
+  <div class="main__div settings">
+    <button class="settings__button">&nbsp;</button>
+    <span class="settings__username">{{ user_username }}</span>
+    <div class="settings__content">
+      <ul class="settings__ul">
+        <li class="settings__item"><a href="/">Pomidoro</a></li>
+        <li class="settings__item"><a href="/shop">Shop</a></li>
+        <li class="settings__item"><a href="/history">History</a></li>
+        <li class="settings__item"><a href="/feedback">Feedback</a></li>
+        <li class="settings__item underline">
+          <a class="settings__item settings__item--logout" href="/logout"
+            >LOG OUT</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- == SHOP == -->
+  <section class="shop__section overview">
+    <h2 class="h2__header">Check your progress</h2>
+    <div class="overview__div">
+      <p class="overview__stats">
+        Your pomidors ----
+        <span>🍅{{ pomidors }}</span>
+      </p>
+      <p class="overview__stats">
+        Your level ----
+        <span id="usersLevel">{{ level }}</span>
+      </p>
+    </div>
+    <div class="overview__div">
+      <p class="overview__stats">Your medals display case:</p>
+      <div class="overview__medals-displayCase">
+        {% for _ in range(gold) %}
+        <span class="bigger" title="Golden medal">🥇</span>
+        {% endfor %} {% for _ in range(silver) %}
+        <span class="bigger" title="Silver medal">🥈️</span>
+        {% endfor %} {% for _ in range(bronze) %}
+        <span class="bigger" title="Bronze medal">🥉</span>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="shop__section medals">
+    <h2 class="h2__header">Buy medals</h2>
+    <form class="medals__form" action="/shop" method="post">
+      <label class="bold" for="prices">Buy a medal: </label>
+
+      <select
+        class="medals__select"
+        name="prices"
+        id="prices"
+        style="font-size: 3rem">
+        <option value="20">🥉- 🍅20</option>
+        <option value="50">🥈 -🍅50</option>
+        <option value="100">🥇 -🍅100</option>
+      </select>
+      <button class="confirm__button">BUY</button>
+    </form>
+    <p class="error-m">{{ errorm }}</p>
+  </section>
+  <section class="shop__section unlock">
+    <h2 class="h2__header unlock__h2">Unlock Wisdom Pomidors</h2>
+
+    <p class="unlock__p bold">
+      Spend your pomidors on experience:
+      <span class="bold" id="rangeSliderValue">🍅{{ pomidors }}</span>
+    </p>
+    <input
+      type="range"
+      min="0"
+      max="{{ pomidors }}"
+      value="{{ pomidors }}"
+      class="unlock__rangeSlider"
+      id="inputRange"
+      oninput="changeInputValue()" />
+    <button class="unlock__button confirm__button" onclick="addExperience()">
+      TRAIN TO UNLOCK
+    </button>
+
+    <!-- looping 6 times for 6 pomidors -->
+    {% for n in range(6) %}
+    <div class="unlock__div">
+      <!-- if element is not unlocked show black pictures -->
+      {% if level < (n + 1) %}
+      <div class="unlock__element unlock__element--{{ n + 1 }}">
+        {% if level == n %} {{ experience - 100*n }}% {% endif %}
+      </div>
+      <!--* show progress only on next pomidor -->
+      {% if level == n %}
+      <p class="unlock__progress">
+        Progress to unlock lvl {{n+1}} pomidor: {{ experience - 100*n }}/100
+      </p>
+      {% endif %}
+      <!-- show unlocking button after enough experience trained -->
+      {% if experience >= (n + 1) * 100 and level == n %}
+      <button
+        class="unlock__button"
+        onclick="unlockPomidor(this)"
+        value="{{ n + 1 }}">
+        Unlock {{n+1}} level
+      </button>
+      {% endif %}
+      <!-- if element is not unlocked show colored pictures -->
+      {% else %}
+      <div class="unlock__element unlock__element--{{ n + 1 }} unlocked"></div>
+      <div class="unlock__description">
+        <p class="unlock__name bold">{{ descriptions[n]['name'] }}</p>
+        <p class="unlock__information">{{ descriptions[n]['description'] }}</p>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %} {% endblock %}
+  </section>
+  <!-- *sep -->
+  {% block footer %}
+  <footer class="footer"></footer>
+  <!--* upper script for declaring global variables that come from app.py  -->
+  <script type="text/javascript">
+    // <!-- can insert global variables  -->
+  </script>
+  <script src="../static/js/script_shop.js"></script>
+</main>
+{% endblock %}

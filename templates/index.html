@@ -1,0 +1,209 @@
+{% extends "layout.html" %}
+<!--* sep -->
+{% block title %} Pomidors Home {% endblock %}
+<!--* additional scripts -->
+{% block head %} {% if level >= 0 %}
+<style>
+  h1::before {
+    content: url(../static/img/{{level}}_t.png);
+    display: inline-block;
+    width: 100px; /* Set the width of your image */
+    height: 50px; /* Set the height of your image */
+    /* Additional styling as needed */
+  }
+</style>
+{% endif %}{% endblock %}
+<!--* sep -->
+{% block bigH1 %}Pomidoro{% endblock %}
+<!--* HEADER INNY BO MUSI MIEC WCZESNIEJSZA CZESC WSPOLNA -->
+{% block header %}
+<!-- ADDITIONAL HEADER CONTENT -->
+{% endblock %}
+
+<!--* sep -->
+{% block main %}
+
+<main class="main index">
+  <!-- == SETTINGS MENU == -->
+  <div class="main__div settings">
+    <button class="settings__button">&nbsp;</button>
+    <span class="settings__username">{{ user_username }}</span>
+    <div class="settings__content">
+      <ul class="settings__ul">
+        <li class="settings__item"><a href="/">Pomidoro</a></li>
+        <li class="settings__item"><a href="/shop">Shop</a></li>
+        <li class="settings__item"><a href="/history">History</a></li>
+        <li class="settings__item"><a href="/feedback">Feedback</a></li>
+        <li class="settings__item underline">
+          <a class="settings__item settings__item--logout" href="/logout"
+            >LOG OUT</a
+          >
+        </li>
+        <li class="settings__item settings__item--setTime">
+          <form action="/" method="post">
+            <button
+              type="button"
+              class="settings__item--button"
+              onclick="showHideTimeSettings()">
+              Set Times
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--?  // END SETTINGS MENU // -->
+  <!-- == POMIDORO TIMER ==  -->
+  <div class="pomidoro">
+    <div class="pomidoro__info">
+      <p class="pomidoro__info--item active" id="mode--work">work</p>
+      <p class="pomidoro__info--item" id="mode--break-short">short break</p>
+      <p class="pomidoro__info--item" id="mode--break-long">long break</p>
+    </div>
+    <div class="pomidoro__setTime">
+      <input
+        class="setTime__input"
+        id="set_minutes"
+        type="number"
+        min="0"
+        max="59"
+        name="minutes"
+        placeholder="Minutes"
+        autocomplete="off" />
+      <span>:</span>
+      <input
+        class="setTime__input"
+        id="set_seconds"
+        type="number"
+        min="0"
+        max="59"
+        name="seconds"
+        placeholder="Seconds"
+        autocomplete="off" />
+      <button class="setTime__button" onclick="updateSetTimeByInput()">
+        Quick Set Time
+      </button>
+    </div>
+    <div class="pomidoro__timer">
+      <p class="pomidoro__timer--item" id="minutes">min</p>
+      <p class="pomidoro__timer--item" id="separator">:</p>
+      <p class="pomidoro__timer--item" id="seconds">sec</p>
+    </div>
+    <div class="pomidoro__controls">
+      <button
+        class="controls__button"
+        title="pause timer"
+        onclick="pauseTimer()">
+        <i class="fa-solid fa-pause"></i>
+      </button>
+      <button
+        class="controls__button"
+        title="play timer"
+        onclick="startTimer()">
+        <i class="fa-solid fa-play"></i>
+      </button>
+      <button
+        class="controls__button"
+        title="reset timer"
+        onclick="resetTimer()">
+        <i class="fa-solid fa-rotate-left"></i>
+      </button>
+    </div>
+
+    <div class="pomidoro__setTimeWindow offscreen">
+      <button
+        class="setTimeWindow__button setTimeWindow__button--exit"
+        type="button"
+        onclick="showHideTimeSettings()">
+        <i class="fa-sharp fa-solid fa-circle-xmark"></i>
+      </button>
+      <form action="/" method="post">
+        <div class="setTimeWindow__container">
+          <div class="setTimeWindow__item setTimeWindow__item--work">
+            <p class="bold">work</p>
+            <input
+              class="setTimeWindow__item--input"
+              type="number"
+              name="workMins"
+              id="setWorkMins"
+              value="0"
+              min="0"
+              max="59" />
+            <p class="separator" style="display: inline">:</p>
+            <input
+              class="setTimeWindow__item--input"
+              type="number"
+              name="workSecs"
+              id="setWorkSecs"
+              value="0"
+              min="0"
+              max="59" />
+          </div>
+          <div class="setTimeWindow__item setTimeWindow__item--break-short">
+            <p class="bold">short break</p>
+            <input
+              class="setTimeWindow__item--input"
+              type="number"
+              name="breakShortMins"
+              id="setBreakShortMins"
+              value="0"
+              min="0"
+              max="59" />
+            <p class="separator" style="display: inline">:</p>
+            <input
+              class="setTimeWindow__item--input"
+              type="number"
+              name="breakShortSecs"
+              id="setBreakShortSecs"
+              value="0"
+              min="0"
+              max="59" />
+          </div>
+          <div class="setTimeWindow__item setTimeWindow__item--break-long">
+            <p class="bold">long break</p>
+            <input
+              class="setTimeWindow__item--input"
+              type="number"
+              name="breakLongMins"
+              id="setBreakLongMins"
+              value="0"
+              min="0"
+              max="59" />
+
+            <p class="separator" style="display: inline">:</p>
+            <input
+              class="setTimeWindow__item--input"
+              type="number"
+              name="breakLongSecs"
+              id="setBreakLongSecs"
+              value="0"
+              min="0"
+              max="59" />
+          </div>
+        </div>
+        <button
+          class="setTimeWindow__button setTimeWindow__button--save"
+          type="submit">
+          Set time
+        </button>
+      </form>
+    </div>
+    <!--* this is just for globalVariable declaration -->
+  </div>
+  <!--?  // END POMIDORO TIMER // -->
+  <!-- pomidoro set time offscreen -->
+</main>
+
+{% endblock %}
+
+<!--* sep -->
+{% block footer %}
+<footer class="footer"></footer>
+<!--* upper script for declaring global variables that come from app.py  -->
+<script type="text/javascript">
+  const globalMessage = '{{ mes }}';
+  const globalTimeSettings = '{{ users_time_settings | safe }}';
+  globalTimeSettingsDict = JSON.parse(globalTimeSettings);
+</script>
+<script src="../static/js/script_pomidoro.js"></script>
+{% endblock %}
